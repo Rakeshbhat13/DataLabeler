@@ -38,8 +38,6 @@ JWT_SECRET=your_jwt_secret
 PORT=5000
 ```
 
-> Do not commit `.env` to GitHub. Sensitive values like `MONGO_URI` and `JWT_SECRET` belong in local or production environment configuration.
-
 ## Notes
 
 - The backend uses MongoDB in production; the in-memory fallback is only for development convenience.
