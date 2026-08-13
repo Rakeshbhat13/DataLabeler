@@ -89,8 +89,6 @@ JWT_SECRET=your_strong_random_secret
 PORT=5000
 ```
 
-> ⚠️ Never commit `.env` to GitHub. It's already covered by `.gitignore`, but double-check before pushing.
-
 ### Frontend (`frontend/.env` or hosting provider env vars)
 
 ```env
