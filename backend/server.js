@@ -14,12 +14,13 @@ const envRes = dotenv.config({ path: envPath });
 if (envRes.error) console.warn('Could not load .env from', envPath, envRes.error.message || envRes.error);
 
 if (!process.env.JWT_SECRET) {
-  if (process.env.NODE_ENV === 'production') {
-    console.error('Missing JWT_SECRET environment variable. Please add JWT_SECRET to your deployment environment.');
-    process.exit(1);
-  }
-  console.warn('JWT_SECRET not set — using temporary dev secret. Set JWT_SECRET in production!');
-  process.env.JWT_SECRET = 'dev_secret_local_change_me';
+  // If no JWT secret is provided, generate a runtime secret so the server
+  // doesn't crash on platforms where envs were not configured yet (e.g. first deploy).
+  // This is safer than exiting; in production you should still set a persistent
+  // `JWT_SECRET` environment variable so tokens remain valid across restarts.
+  const { randomBytes } = require('crypto');
+  process.env.JWT_SECRET = randomBytes(32).toString('hex');
+  console.warn('JWT_SECRET was not set — a runtime secret was generated.\nSet JWT_SECRET in your deployment environment to persist tokens across restarts.');
 }
 
 const app = express();
