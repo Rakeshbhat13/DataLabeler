@@ -14,8 +14,12 @@ const envRes = dotenv.config({ path: envPath });
 if (envRes.error) console.warn('Could not load .env from', envPath, envRes.error.message || envRes.error);
 
 if (!process.env.JWT_SECRET) {
-  console.error('Missing JWT_SECRET environment variable. Please add JWT_SECRET to backend/.env or your deployment environment.');
-  process.exit(1);
+  if (process.env.NODE_ENV === 'production') {
+    console.error('Missing JWT_SECRET environment variable. Please add JWT_SECRET to your deployment environment.');
+    process.exit(1);
+  }
+  console.warn('JWT_SECRET not set — using temporary dev secret. Set JWT_SECRET in production!');
+  process.env.JWT_SECRET = 'dev_secret_local_change_me';
 }
 
 const app = express();
