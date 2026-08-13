@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 const rawUri = process.env.MONGO_URI || process.env.MONGO_URL || '';
 const MONGO_URI = rawUri ? rawUri.replace(/^\s*"(.*)"\s*$/, '$1') : '';
 if (!MONGO_URI) {
-  console.error('Connection error: MONGO_URI is not set. Please add it to', envPath);
+  console.warn('MONGO_URI is not set — the server will use the in-memory fallback (no persistent DB). Set MONGO_URI in Render/your .env to enable MongoDB.');
 } else {
   mongoose.connect(MONGO_URI)
     .then(() => console.log('MongoDB connected'))
