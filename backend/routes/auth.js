@@ -54,7 +54,7 @@ router.post('/login', async (req, res) => {
 			const ok = await bcrypt.compare(password, user.passwordHash);
 			if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
 			const payload = { id: user._id, email: user.email, role: user.role };
-			const token = jwt.sign(payload, process.env.JWT_SECRET || 'dev_secret', { expiresIn: '7d' });
+			const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
 			return res.json({ token, email: user.email, role: user.role });
 		}
 
@@ -64,7 +64,7 @@ router.post('/login', async (req, res) => {
 		const ok2 = await bcrypt.compare(password, user.passwordHash);
 		if (!ok2) return res.status(401).json({ error: 'Invalid credentials' });
 		const payload = { id: user.id, email: user.email, role: user.role };
-		const token = jwt.sign(payload, process.env.JWT_SECRET || 'dev_secret', { expiresIn: '7d' });
+		const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
 		return res.json({ token, email: user.email, role: user.role });
 	} catch (err) {
 		console.error(err);
